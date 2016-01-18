@@ -7,6 +7,11 @@
 @comcastroYellow = "#FEC71C"
 @logoSourceSize = 720
 
+@logoNudge = 
+	x: -23.1
+	y: 40.26
+	
+
 class @LogoLayer extends Layer
 	
 	constructor: (@options)->
@@ -43,11 +48,6 @@ class @LogoLayer extends Layer
 		starNudge = 
 			x: -3.301
 			y: -10.022
-		
-		logoNudge = 
-			x: -23.1 
-			y: 40.26
-		
 		
 		@cScale =  new Layer
 			name: "scale"

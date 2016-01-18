@@ -9,13 +9,28 @@ logo2 = new LogoLayer
 logo3 = new LogoLayer
 	x: 40
 	y: 440
+	
+logo4 = new LogoLayer
+	x: 440
+	y: 440
 
-spin1 = new AnimationSpin(logo1)
-spin1.start()
+spin = new AnimationSpin(logo1)
+spin.start()
 
-spin2 = new AnimationSpring(logo2)
-spin2.start()
+spring = new AnimationSpring(logo2)
+spring.start()
 
+pulseBreathe = new AnimationBreathePulseRotate(logo3)
+pulseBreathe.start()
+
+simpleRotation = new AnimationSimpleRotate(logo3)
+simpleRotation.start()
+
+nod = new AnimationNodMusic(logo4)
+nod.start()
+
+#danger = new AnimationDanger(logo4)
+#danger.start()
 
 
 
