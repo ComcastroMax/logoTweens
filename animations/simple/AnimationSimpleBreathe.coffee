@@ -1,13 +1,14 @@
 #Class holding animation properties for the LogoLayer object
  
 
-class @AnimationSimpleBreathe
+class @AnimationSimpleBreathe extends AnimationTween
 	constructor: (logo) ->
-		@logo = logo
+		super logo
 		@makeAnimations()
 	
 	start: ->	
-		@cStarGrow.start()
+		super()
+		@anims[0].start()
 
 	makeAnimations: -> 
 		
@@ -18,8 +19,9 @@ class @AnimationSimpleBreathe
 		shrinkCurve = "ease-out"
 		growTime = 0.4
 		shrinkTime = 0.4
+		shrinkDelay = 0.2
 	
-		@cStarGrow = new Animation
+		cStarGrow = new Animation
 			layer: @logo.cStar
 			properties:
 				scaleX: growScale
@@ -27,23 +29,27 @@ class @AnimationSimpleBreathe
 			time: growTime
 			curve: growCurve
 		
-		@cStarShrink = new Animation
+		cStarShrink = new Animation
 			layer: @logo.cStar
 			properties:
 				scaleX: 1
 				scaleY: 1
 			time: shrinkTime
 			curve: shrinkCurve
+			delay: shrinkDelay
 		
+		@anims = [
+			cStarGrow,
+			cStarShrink
+			]
 		
 		#listeners
 		
-		@cStarGrow.on Events.AnimationEnd, =>
-			@cStarShrink.start()
+		cStarGrow.on Events.AnimationEnd, ->
+			if !@halt then cStarShrink.start()
 			
-		@cStarShrink.on Events.AnimationEnd, =>
-			Utils.delay 0.2, =>
-				@cStarGrow.start()
+		cStarShrink.on Events.AnimationEnd, ->
+			if !@halt then cStarGrow.start()
 		
 		
 	

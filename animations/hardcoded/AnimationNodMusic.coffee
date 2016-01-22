@@ -1,15 +1,16 @@
 #Class holding animation properties for the LogoLayer object
  
 
-class @AnimationNodMusic
+class @AnimationNodMusic extends AnimationTween
 	constructor: (logo) ->
-		@logo = logo
+		super logo
 		@makeAnimations()
 	
 	start: ->	
-		@cMidRotateUp.start()
+		super()
+		@anims[0].start()
 		@weirdLoop()
-
+		
 	makeAnimations: -> 
 		
 		#Create Properties
@@ -19,7 +20,7 @@ class @AnimationNodMusic
 		rotateUpTime = 0.5
 		rotateDownTime = 0.5
 			
-		@cMidRotateUp = new Animation
+		cMidRotateUp = new Animation
 			layer: @logo.cPos
 			properties:
 				rotation: rotateUp
@@ -27,25 +28,29 @@ class @AnimationNodMusic
 			curve: "ease-out"
 		
 		
-		@cMidRotateDown = new Animation
+		cMidRotateDown = new Animation
 			layer: @logo.cPos
 			properties:
 				rotation: rotateDown
 			time: rotateDownTime
 			curve: "cubic-bezier(.74,.24,.83,.67)"
 		
+		@anims = [
+			cMidRotateUp,
+			cMidRotateDown
+			]
 		
 		#listeners
 		
-		@cMidRotateUp.on Events.AnimationEnd, =>
-			@cMidRotateDown.start()
+		cMidRotateUp.on Events.AnimationEnd, =>
+			if !@halt then cMidRotateDown.start() else @logo.reset()
 		
-		@cMidRotateDown.on Events.AnimationEnd, =>
-			@cMidRotateUp.start()
+		cMidRotateDown.on Events.AnimationEnd, =>
+			if !@halt then cMidRotateUp.start() else @logo.reset()
 		
 	weirdLoop: ->
 		Utils.delay 0.1, =>
-			@makeCrazy()
+			if !@halt then @makeCrazy() else @logo.reset()
 	
 	makeCrazy: ->
 		

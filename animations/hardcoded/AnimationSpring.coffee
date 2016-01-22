@@ -1,16 +1,17 @@
 #Class holding animation properties for the LogoLayer object
  
 
-class @AnimationSpring
+class @AnimationSpring extends AnimationTween
 	constructor: (logo) ->
-		@logo = logo
+		super logo
 		@makeAnimations()
 	
 	start: ->	
-		@cInGrow.start()
-		@cMidGrow.start() 
-		@cOutGrow.start()  
-		@cStarGrow.start()
+		super()
+		@anims[0].start()
+		@anims[1].start()
+		@anims[2].start()
+		@anims[3].start()
 
 	makeAnimations: -> 
 	
@@ -18,7 +19,7 @@ class @AnimationSpring
 		starGrowExtra = 0.8
 		shrinkScale = 0
 		
-		growDelay = 1.5
+		growDelay = 0
 		
 		growTime = 0.2
 		starGrowTimeExtra = 0.1
@@ -57,7 +58,7 @@ class @AnimationSpring
 		
 		#grow state
 		
-		@cInGrow = new Animation
+		cInGrow = new Animation
 			layer: @logo.cIn
 			properties:
 				scaleX: growScale
@@ -66,7 +67,7 @@ class @AnimationSpring
 			delay: (growDelay + slinkyTime * 2)
 			time: growTime
 			
-		@cMidGrow = new Animation
+		cMidGrow = new Animation
 			layer: @logo.cMid
 			properties:
 				scaleX: growScale
@@ -75,7 +76,7 @@ class @AnimationSpring
 			delay: (growDelay + slinkyTime)
 			time: growTime
 		
-		@cOutGrow = new Animation
+		cOutGrow = new Animation
 			layer: @logo.cOut
 			properties:
 				scaleX: growScale
@@ -84,7 +85,7 @@ class @AnimationSpring
 			delay: growDelay
 			time: growTime
 		
-		@cStarGrow = new Animation
+		cStarGrow = new Animation
 			layer: @logo.cStar
 			properties:
 				scaleX: (growScale + starGrowExtra)
@@ -95,7 +96,7 @@ class @AnimationSpring
 		
 		#shrinking state
 		
-		@cInShrink = new Animation
+		cInShrink = new Animation
 			layer: @logo.cIn
 			properties:
 				scaleX: shrinkScale
@@ -103,7 +104,7 @@ class @AnimationSpring
 			curve: shrinkCurve
 			time: shrinkTime
 		
-		@cMidShrink = new Animation
+		cMidShrink = new Animation
 			layer: @logo.cMid
 			properties:
 				scaleX: shrinkScale
@@ -111,7 +112,7 @@ class @AnimationSpring
 			curve: shrinkCurve
 			time: shrinkTime
 		
-		@cOutShrink = new Animation
+		cOutShrink = new Animation
 			layer: @logo.cOut
 			properties:
 				scaleX: shrinkScale
@@ -119,7 +120,7 @@ class @AnimationSpring
 			curve: shrinkCurve
 			time: shrinkTime
 			
-		@cStarShrink = new Animation
+		cStarShrink = new Animation
 			layer: @logo.cStar
 			properties:
 				scaleX: shrinkScale
@@ -129,7 +130,7 @@ class @AnimationSpring
 		
 		#reset state
 		
-		@cInReset = new Animation
+		cInReset = new Animation
 			layer: @logo.cIn
 			properties:
 				scaleX: 1
@@ -138,7 +139,7 @@ class @AnimationSpring
 			time: resetTime
 			delay: (resetDelay - slinkyTime * 2)
 		
-		@cMidReset = new Animation
+		cMidReset = new Animation
 			layer: @logo.cMid
 			properties:
 				scaleX: 1
@@ -147,7 +148,7 @@ class @AnimationSpring
 			time: resetTime
 			delay: (resetDelay - slinkyTime)
 		
-		@cOutReset = new Animation
+		cOutReset = new Animation
 			layer: @logo.cOut
 			properties:
 				scaleX: 1
@@ -156,7 +157,7 @@ class @AnimationSpring
 			time: resetTime
 			delay: resetDelay
 		
-		@cStarReset = new Animation
+		cStarReset = new Animation
 			layer: @logo.cStar
 			properties:
 				scaleX: 1
@@ -165,41 +166,56 @@ class @AnimationSpring
 			time: resetTime
 			delay: (resetDelay - starDelayExtra - starGrowTimeExtra)
 		
+		@anims = [
+			cInGrow,
+			cMidGrow,
+			cOutGrow,
+			cStarGrow,
+			cInShrink,
+			cMidShrink,
+			cOutShrink,
+			cStarShrink,
+			cInReset,
+			cMidReset,
+			cOutReset,
+			cStarReset
+			]
+			
 		
 		#Create Listeners
 		
 		
-		@cInGrow.on Events.AnimationEnd, =>
-			@cInShrink.start()
-		@cInShrink.on Events.AnimationEnd, =>
-			@cInReset.start()
+		cInGrow.on Events.AnimationEnd, =>
+			if !@halt then cInShrink.start() else @logo.reset()
+		cInShrink.on Events.AnimationEnd, =>
+			if !@halt then cInReset.start() else @logo.reset()
 		
-		@cMidGrow.on Events.AnimationEnd, =>
-			@cMidShrink.start()
-		@cMidShrink.on Events.AnimationEnd, =>
-			@cMidReset.start()
+		cMidGrow.on Events.AnimationEnd, =>
+			if !@halt then cMidShrink.start() else @logo.reset()
+		cMidShrink.on Events.AnimationEnd, =>
+			if !@halt then cMidReset.start() else @logo.reset()
 			
-		@cOutGrow.on Events.AnimationEnd, =>
-			@cOutShrink.start()
-		@cOutShrink.on Events.AnimationEnd, =>
-			@cOutReset.start()
+		cOutGrow.on Events.AnimationEnd, =>
+			if !@halt then cOutShrink.start() else @logo.reset()
+		cOutShrink.on Events.AnimationEnd, =>
+			if !@halt then cOutReset.start() else @logo.reset()
 			
-		@cStarGrow.on Events.AnimationEnd, =>
-			@cStarShrink.start()
-		@cStarShrink.on Events.AnimationEnd, =>
-			@cStarReset.start()
-		@cStarReset.on Events.AnimationEnd, =>
-			@start() #start all
+		cStarGrow.on Events.AnimationEnd, =>
+			if !@halt then cStarShrink.start() else @logo.reset()
+		cStarShrink.on Events.AnimationEnd, =>
+			if !@halt then cStarReset.start() else @logo.reset()
+		cStarReset.on Events.AnimationEnd, =>
+			Utils.delay 1.5, =>
+				if !@halt
+					cInGrow.start()
+					cMidGrow.start() 
+					cOutGrow.start()  
+					cStarGrow.start() 
+				else 
+			  		@logo.reset()
 			
-		###
-		#wait for star reset
-		@cInReset.on Events.AnimationEnd, =>
-			@cInGrow.start()
-		@cOutReset.on Events.AnimationEnd, =>
-			@cOutGrow.start()
-		@cMidReset.on Events.AnimationEnd, =>
-			@cMidGrow.start()
-		###
+		
+		
 		
 		
 		

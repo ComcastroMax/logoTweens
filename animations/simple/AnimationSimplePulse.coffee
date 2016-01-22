@@ -1,16 +1,17 @@
 #Class holding animation properties for the LogoLayer object
  
 
-class @AnimationSimplePulse
+class @AnimationSimplePulse extends AnimationTween
 	constructor: (logo) ->
-		@logo = logo
+		super logo
 		@makeAnimations()
 		@logo.cIn.opacity = 0
 		@logo.cOut.opacity = 0
 	
 	start: ->	
-		@cInFadeIn.start()
-		@cOutFadeIn.start()
+		super()
+		@anims[0].start()
+		@anims[1].start()
 
 	makeAnimations: -> 
 		
@@ -24,7 +25,7 @@ class @AnimationSimplePulse
 		
 		fadeCurve = "ease-in-out"
 	
-		@cInFadeIn = new Animation
+		cInFadeIn = new Animation
 			layer: @logo.cIn
 			properties:
 				opacity: 1
@@ -32,7 +33,7 @@ class @AnimationSimplePulse
 			time: fadeInTime
 			delay: startDelay
 		
-		@cOutFadeIn = new Animation
+		cOutFadeIn = new Animation
 			layer: @logo.cOut
 			properties:
 				opacity: 1
@@ -40,7 +41,7 @@ class @AnimationSimplePulse
 			time: fadeInTime
 			delay: (fadeDelay + startDelay)
 		
-		@cInFadeOut = new Animation
+		cInFadeOut = new Animation
 			layer: @logo.cIn
 			properties:
 				opacity: 0
@@ -48,7 +49,7 @@ class @AnimationSimplePulse
 			time: fadeOutTime
 			delay: 0	
 				
-		@cOutFadeOut = new Animation
+		cOutFadeOut = new Animation
 			layer: @logo.cOut
 			properties:
 				opacity: 0
@@ -56,17 +57,23 @@ class @AnimationSimplePulse
 			time: fadeOutTime
 			delay: 0
 		
-		
-		
-		@cInFadeIn.on Events.AnimationEnd, =>
-			@cInFadeOut.start()
+		@anims = [
+			cInFadeIn,
+			cOutFadeIn,
+			cInFadeOut,
+			cOutFadeOut]
 			
-		@cOutFadeIn.on Events.AnimationEnd, =>
-			@cOutFadeOut.start()
+		
+		cInFadeIn.on Events.AnimationEnd, =>
+			if !@halt then cInFadeOut.start()
+			
+		cOutFadeIn.on Events.AnimationEnd, =>
+			if !@halt then cOutFadeOut.start()
 
-		@cOutFadeOut.on Events.AnimationEnd, =>
-			@start()
-			
+		cOutFadeOut.on Events.AnimationEnd, =>
+			if !@halt 
+				cInFadeIn.start()
+				cOutFadeIn.start()
 
 		
 	
