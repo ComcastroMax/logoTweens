@@ -729,19 +729,22 @@
        */
 
       /*
-      		#@yellowHsl.l = Utils.randomNumber(0.4,0.6)
-      		#newYellow = tinycolor(@yellowHsl).toHexString()
+      		
+      		@yellowHsl.l = Utils.randomNumber(0.4,0.6)
+      		newYellow = tinycolor(@yellowHsl).toHexString()
       		#@logo.backgroundColor = newYellow
       		
       		@shade = new Animation
-      			layer: logo
+      			layer: @logo
       			properties: 
-      				backgroundColor: "red"
+      				backgroundColor: newYellow
       			time: shakeDur
-      			
+       */
+
+      /*
       		@logo.animate
       			properties: 
-      				backgroundColor: "red"
+      				backgroundColor: "newYellow"
       			time:shakeDur
        */
       this.rotationStar.on(Events.AnimationEnd, (function(_this) {
