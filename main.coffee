@@ -58,6 +58,7 @@ for logo, i in logos
 	
 	
 	
+	
 
 logos[0].anim = getAnimation1(logos[0])
 logos[1].anim = getAnimation2(logos[1])
