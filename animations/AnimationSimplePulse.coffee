@@ -1,7 +1,7 @@
 #Class holding animation properties for the LogoLayer object
  
 
-class @AnimationPulse
+class @AnimationSimplePulse
 	constructor: (logo) ->
 		@logo = logo
 		@makeAnimations()
@@ -63,21 +63,10 @@ class @AnimationPulse
 			
 		@cOutFadeIn.on Events.AnimationEnd, =>
 			@cOutFadeOut.start()
-		
-		###
-		#wait for cOut fade out
-		@cInFadeOut.on Events.AnimationEnd, =>
-			@cInFadeIn.start()
-		###
-			
+
 		@cOutFadeOut.on Events.AnimationEnd, =>
-			@rotatePulse()
 			@start()
 			
-	rotatePulse: ->
-		twoFifths = 144 # 2/5 of 360
-		#oneFifth = 72 # 1/5 of 360
-		@logo.cIn.rotation = (@logo.cIn.rotation + twoFifths) % 360
-		@logo.cOut.rotation = (@logo.cOut.rotation) + twoFifths % 360
+
 		
 	

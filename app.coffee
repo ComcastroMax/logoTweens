@@ -13,6 +13,24 @@ logo3 = new LogoLayer
 logo4 = new LogoLayer
 	x: 440
 	y: 440
+	
+logo5 = new LogoLayer
+	x: 40
+	y: 840
+	
+logo6 = new LogoLayer
+	x: 440
+	y: 840
+	
+###
+logo7 = new LogoLayer
+	x: 40
+	y: 1240
+	
+logo8 = new LogoLayer
+	x: 440
+	y: 1240
+###
 
 spin = new AnimationSpin(logo1)
 spin.start()
@@ -23,14 +41,20 @@ spring.start()
 pulseBreathe = new AnimationBreathePulseRotate(logo3)
 pulseBreathe.start()
 
-simpleRotation = new AnimationSimpleRotate(logo3)
-simpleRotation.start()
-
 nod = new AnimationNodMusic(logo4)
 nod.start()
 
-#danger = new AnimationDanger(logo4)
-#danger.start()
+danger = new AnimationDanger(logo5)
+danger.startSmooth()
+
+#danger2 = new AnimationDanger(logo6)
+#danger2.startChoppy()
+
+#cascade = new AnimationPulseCascade(logo6)
+
+
+
+
 
 
 

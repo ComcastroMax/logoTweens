@@ -420,20 +420,20 @@
 }).call(this);
 
 (function() {
-  this.AnimationPulse = (function() {
-    function AnimationPulse(logo) {
+  this.AnimationSimplePulse = (function() {
+    function AnimationSimplePulse(logo) {
       this.logo = logo;
       this.makeAnimations();
       this.logo.cIn.opacity = 0;
       this.logo.cOut.opacity = 0;
     }
 
-    AnimationPulse.prototype.start = function() {
+    AnimationSimplePulse.prototype.start = function() {
       this.cInFadeIn.start();
       return this.cOutFadeIn.start();
     };
 
-    AnimationPulse.prototype.makeAnimations = function() {
+    AnimationSimplePulse.prototype.makeAnimations = function() {
       var fadeCurve, fadeDelay, fadeInTime, fadeOutTime, startDelay;
       fadeInTime = 0.3;
       fadeOutTime = 0.3;
@@ -486,30 +486,46 @@
           return _this.cOutFadeOut.start();
         };
       })(this));
-
-      /*
-      		#wait for cOut fade out
-      		@cInFadeOut.on Events.AnimationEnd, =>
-      			@cInFadeIn.start()
-       */
       return this.cOutFadeOut.on(Events.AnimationEnd, (function(_this) {
         return function() {
-          _this.rotatePulse();
           return _this.start();
         };
       })(this));
     };
 
-    AnimationPulse.prototype.rotatePulse = function() {
+    return AnimationSimplePulse;
+
+  })();
+
+}).call(this);
+
+(function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  this.AnimationPulseRotate = (function(superClass) {
+    extend(AnimationPulseRotate, superClass);
+
+    function AnimationPulseRotate(logo) {
+      AnimationPulseRotate.__super__.constructor.call(this, logo);
+      this.cOutFadeOut.on(Events.AnimationEnd, (function(_this) {
+        return function() {
+          _this.rotatePulse();
+          return _this.start();
+        };
+      })(this));
+    }
+
+    AnimationPulseRotate.prototype.rotatePulse = function() {
       var twoFifths;
       twoFifths = 144;
       this.logo.cIn.rotation = (this.logo.cIn.rotation + twoFifths) % 360;
       return this.logo.cOut.rotation = this.logo.cOut.rotation + twoFifths % 360;
     };
 
-    return AnimationPulse;
+    return AnimationPulseRotate;
 
-  })();
+  })(AnimationSimplePulse);
 
 }).call(this);
 
@@ -628,8 +644,12 @@
       this.yellowHsl = tinycolor(comcastroYellow).toHsl();
     }
 
-    AnimationDanger.prototype.start = function() {
+    AnimationDanger.prototype.startChoppy = function() {
       return this.weirdLoop();
+    };
+
+    AnimationDanger.prototype.startSmooth = function() {
+      return this.animateCrazy();
     };
 
     AnimationDanger.prototype.weirdLoop = function() {
@@ -648,11 +668,96 @@
       this.logo.cPos.x = logoNudge.x + Utils.randomNumber(-10, 10);
       this.logo.cPos.y = logoNudge.y + Utils.randomNumber(-10, 10);
       fakeLevel = Utils.randomNumber(0, 3);
-      this.logo.cIn.visible = fakeLevel > 1;
-      this.logo.cOut.visible = fakeLevel > 2;
-      this.yellowHsl.l = Utils.randomNumber(0.4, 0.6);
-      this.logo.backgroundColor = tinycolor(this.yellowHsl).toHexString();
       return this.weirdLoop();
+    };
+
+    AnimationDanger.prototype.animateCrazy = function() {
+      var cInRotation, rotateRayScalar, rotateScalar, shakeDur, shakeScalar, starScalar;
+      shakeDur = 0.1;
+      shakeScalar = 15;
+      rotateScalar = 20;
+      rotateRayScalar = 15;
+      starScalar = 36;
+      this.rotationStar = new Animation({
+        layer: this.logo.cStar,
+        properties: {
+          rotation: Utils.randomNumber(-starScalar, starScalar)
+        },
+        time: shakeDur,
+        curve: "ease-in-out"
+      });
+      cInRotation = Utils.randomNumber(-rotateRayScalar, rotateRayScalar);
+      this.rotationIn = new Animation({
+        layer: this.logo.cIn,
+        properties: {
+          rotation: cInRotation
+        },
+        time: shakeDur,
+        curve: "ease-in-out"
+      });
+      this.rotationOut = new Animation({
+        layer: this.logo.cOut,
+        properties: {
+          rotation: cInRotation + Utils.randomNumber(-10, 10)
+        },
+        time: shakeDur,
+        curve: "ease-in-out"
+      });
+      this.rotationMid = new Animation({
+        layer: this.logo.cMid,
+        properties: {
+          rotation: Utils.randomNumber(-rotateScalar, rotateScalar)
+        },
+        time: shakeDur,
+        curve: "ease-in-out"
+      });
+      this.shakes = new Animation({
+        layer: this.logo.cPos,
+        properties: {
+          x: logoNudge.x + Utils.randomNumber(-shakeScalar, shakeScalar),
+          y: logoNudge.y + Utils.randomNumber(-shakeScalar, shakeScalar)
+        },
+        time: shakeDur,
+        curve: "ease-in-out"
+      });
+
+      /*
+      		fakeLevel = Utils.randomNumber(0,3)
+      		
+      		@logo.cIn.visible = (fakeLevel > 1) #false if fakeLevel < 1 else @logo.cIn.visible = true 
+      		@logo.cOut.visible = (fakeLevel > 2) #false if fakeLevel < 2 else @logo.cOut.visible = true
+       */
+
+      /*
+      		#@yellowHsl.l = Utils.randomNumber(0.4,0.6)
+      		#newYellow = tinycolor(@yellowHsl).toHexString()
+      		#@logo.backgroundColor = newYellow
+      		
+      		@shade = new Animation
+      			layer: logo
+      			properties: 
+      				backgroundColor: "red"
+      			time: shakeDur
+      			
+      		@logo.animate
+      			properties: 
+      				backgroundColor: "red"
+      			time:shakeDur
+       */
+      this.rotationStar.on(Events.AnimationEnd, (function(_this) {
+        return function() {
+          return _this.animateCrazy();
+        };
+      })(this));
+      return this.startAll();
+    };
+
+    AnimationDanger.prototype.startAll = function() {
+      this.rotationStar.start();
+      this.rotationIn.start();
+      this.rotationOut.start();
+      this.rotationMid.start();
+      return this.shakes.start();
     };
 
     return AnimationDanger;
@@ -733,29 +838,68 @@
   this.AnimationBreathePulseRotate = (function() {
     function AnimationBreathePulseRotate(logo) {
       this.logo = logo;
+      this.breathe = new AnimationSimpleBreathe(this.logo);
+      this.pulse = new AnimationPulseRotate(this.logo);
+      this.rotate = new AnimationSimpleRotate(this.logo);
+    }
+
+    AnimationBreathePulseRotate.prototype.start = function() {
+      this.breathe.start();
+      this.pulse.start();
+      return this.rotate.start();
+    };
+
+    return AnimationBreathePulseRotate;
+
+  })();
+
+}).call(this);
+
+(function() {
+  this.AnimationRays = (function() {
+    function AnimationRays(logo) {
+      this.logo = logo;
       this.makeAnimations();
       this.logo.cIn.opacity = 0;
       this.logo.cOut.opacity = 0;
     }
 
-    AnimationBreathePulseRotate.prototype.start = function() {
+    AnimationRays.prototype.start = function() {
       this.cInFadeIn.start();
-      this.cOutFadeIn.start();
-      return this.cStarGrow.start();
+      return this.cOutFadeIn.start();
     };
 
-    AnimationBreathePulseRotate.prototype.makeAnimations = function() {
-      var fadeCurve, fadeDelay, fadeInTime, fadeOutTime, growCurve, growScale, growTime, shrinkCurve, shrinkTime, startDelay;
+    AnimationRays.prototype.makeAnimations = function() {
+      var fadeCurve, fadeDelay, fadeInTime, fadeOutTime, in1, in2, in3, out1, out2, out3, out4, startDelay;
+      in1 = this.logo.cIn.copy();
+      in1.superLayer = this.logo.cIn;
+      in1.rotation = 72;
+      in2 = this.logo.cIn.copy();
+      in2.superLayer = this.logo.cIn;
+      in2.rotation = 72 * 2;
+      in3 = this.logo.cIn.copy();
+      in3.superLayer = this.logo.cIn;
+      in3.rotation = 72 * 3;
+      out4 = this.logo.cIn.copy();
+      out4.superLayer = this.logo.cIn;
+      out4.rotation = 72 * 4;
+      out1 = this.logo.cOut.copy();
+      out1.superLayer = this.logo.cOut;
+      out1.rotation = 72;
+      out2 = this.logo.cOut.copy();
+      out2.superLayer = this.logo.cOut;
+      out2.rotation = 72 * 2;
+      out3 = this.logo.cOut.copy();
+      out3.superLayer = this.logo.cOut;
+      out3.rotation = 72 * 3;
+      out4 = this.logo.cOut.copy();
+      out4.superLayer = this.logo.cOut;
+      out4.rotation = 72 * 4;
       fadeInTime = 0.3;
       fadeOutTime = 0.3;
       fadeDelay = 0.2;
       startDelay = 0.2;
       fadeCurve = "ease-in-out";
-      growScale = 0.9;
-      growCurve = "ease-in";
-      shrinkCurve = "ease-out";
-      growTime = 0.4;
-      shrinkTime = 0.4;
       this.cInFadeIn = new Animation({
         layer: this.logo.cIn,
         properties: {
@@ -792,24 +936,6 @@
         time: fadeOutTime,
         delay: 0
       });
-      this.cStarGrow = new Animation({
-        layer: this.logo.cStar,
-        properties: {
-          scaleX: growScale,
-          scaleY: growScale
-        },
-        time: growTime,
-        curve: growCurve
-      });
-      this.cStarShrink = new Animation({
-        layer: this.logo.cStar,
-        properties: {
-          scaleX: 1,
-          scaleY: 1
-        },
-        time: shrinkTime,
-        curve: shrinkCurve
-      });
       this.cInFadeIn.on(Events.AnimationEnd, (function(_this) {
         return function() {
           return _this.cInFadeOut.start();
@@ -820,11 +946,12 @@
           return _this.cOutFadeOut.start();
         };
       })(this));
-      this.cStarGrow.on(Events.AnimationEnd, (function(_this) {
-        return function() {
-          return _this.cStarShrink.start();
-        };
-      })(this));
+
+      /*
+      		#wait for cOut fade out
+      		@cInFadeOut.on Events.AnimationEnd, =>
+      			@cInFadeIn.start()
+       */
       return this.cOutFadeOut.on(Events.AnimationEnd, (function(_this) {
         return function() {
           _this.rotatePulse();
@@ -833,21 +960,41 @@
       })(this));
     };
 
-    AnimationBreathePulseRotate.prototype.rotatePulse = function() {
+    AnimationRays.prototype.rotatePulse = function() {
       var twoFifths;
       twoFifths = 144;
       this.logo.cIn.rotation = (this.logo.cIn.rotation + twoFifths) % 360;
       return this.logo.cOut.rotation = this.logo.cOut.rotation + twoFifths % 360;
     };
 
-    return AnimationBreathePulseRotate;
+    return AnimationRays;
 
   })();
 
 }).call(this);
 
 (function() {
-  var logo1, logo2, logo3, logo4, nod, pulseBreathe, simpleRotation, spin, spring;
+  this.AnimationPulseCascade = (function() {
+    function AnimationPulseCascade(logo) {
+      this.logo1 = logo;
+      this.logo2 = logo.copy();
+      this.hideExtra(this.logo1);
+      this.hideExtra(this.logo2);
+    }
+
+    AnimationPulseCascade.prototype.hideExtra = function(logoIn) {
+      logoIn.cStar.visible = false;
+      return logoIn.cMid.visible = false;
+    };
+
+    return AnimationPulseCascade;
+
+  })();
+
+}).call(this);
+
+(function() {
+  var danger, logo1, logo2, logo3, logo4, logo5, logo6, nod, pulseBreathe, spin, spring;
 
   logo1 = new LogoLayer({
     x: 40,
@@ -869,6 +1016,27 @@
     y: 440
   });
 
+  logo5 = new LogoLayer({
+    x: 40,
+    y: 840
+  });
+
+  logo6 = new LogoLayer({
+    x: 440,
+    y: 840
+  });
+
+
+  /*
+  logo7 = new LogoLayer
+  	x: 40
+  	y: 1240
+  	
+  logo8 = new LogoLayer
+  	x: 440
+  	y: 1240
+   */
+
   spin = new AnimationSpin(logo1);
 
   spin.start();
@@ -881,13 +1049,13 @@
 
   pulseBreathe.start();
 
-  simpleRotation = new AnimationSimpleRotate(logo3);
-
-  simpleRotation.start();
-
   nod = new AnimationNodMusic(logo4);
 
   nod.start();
+
+  danger = new AnimationDanger(logo5);
+
+  danger.startSmooth();
 
 
   /*
