@@ -1,4 +1,4 @@
-logoMain = new LogoLayer
+logoMain = new LogoBg
 	x: 40
 	y: 40
 
@@ -6,9 +6,10 @@ logoMain = new LogoLayer
 # this blocks the logo while the animation states reset
 # seems you can't call stop() on an animation while it's in a delay state
 ###
-logoCheating = new LogoLayer
-	x: 40
-	y: 40
+
+#logoCheating = new LogoLayer
+#	x: 40
+#	y: 40
 
 
 logos = [
@@ -17,7 +18,7 @@ logos = [
 	new LogoLayer,
 	new LogoLayer,
 	new LogoLayer,
-	new LogoLayer
+	new LogoLayerClear
 	]
 	
 tall = false	
@@ -43,7 +44,9 @@ logos[4].properties =
 	x: 440
 	y: 840
 
-logos[5]
+logos[5].properties =
+  x: 40
+  y: 40
 
 ###	
 for logo, i in logos
@@ -65,7 +68,7 @@ logos[1].anim = getAnimation2(logos[1])
 logos[2].anim = getAnimation3(logos[2])
 logos[3].anim = getAnimation4(logos[3])
 logos[4].anim = getAnimation5(logos[4])
-logos[5].anim = getAnimation6(logos[5].cStar)
+logos[5].anim = getAnimation6(logos[5])
 
 
 #logos[2].anim = new AnimationSimpleBreathe(logos[2])
@@ -76,29 +79,29 @@ for logo in logos
 	
 	logo.start()
 	
-	logo.on Events.MouseOver, (event, layer) =>
-		switch layer.id
-			when logos[0].id 
-				logoMain.anim = getAnimation1(logoMain)
-			when logos[1].id
-				logoMain.anim = getAnimation2(logoMain)
-			when logos[2].id
-				logoMain.anim = getAnimation3(logoMain)
-			when logos[3].id
-				logoMain.anim = getAnimation4(logoMain)
-			when logos[4].id
-				logoMain.anim = getAnimation5(logoMain)
-			when logos[5].id
-				logoMain.anim = getAnimation6(logoMain.cStar)
-		
-		logoCheating.visible = false
-		logoMain.start()
-	
-	logo.on Events.MouseOut, (event, layer) =>
-		logoCheating.visible = true
-		logoMain.stop()
-			
-logos[5].visible = false
+#	logo.on Events.MouseOver, (event, layer) =>
+#		switch layer.id
+#			when logos[0].id
+#				logoMain.anim = getAnimation1(logoMain)
+#			when logos[1].id
+#				logoMain.anim = getAnimation2(logoMain)
+#			when logos[2].id
+#				logoMain.anim = getAnimation3(logoMain)
+#			when logos[3].id
+#				logoMain.anim = getAnimation4(logoMain)
+#			when logos[4].id
+#				logoMain.anim = getAnimation5(logoMain)
+#			when logos[5].id
+#				logoMain.anim = getAnimation6(logoMain.cStar)
+#
+#		logoCheating.visible = false
+#		logoMain.start()
+#
+#	logo.on Events.MouseOut, (event, layer) =>
+#		logoCheating.visible = true
+#		logoMain.stop()
+#
+#logos[5].visible = false
 	
 	
 	

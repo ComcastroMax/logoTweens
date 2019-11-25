@@ -14,4 +14,4 @@
 	return new AnimationDanger(logo)
 	
 @getAnimation6 = (logo) ->
-	return new AnimationShrinkBlurLayer(logo)
+	return new AnimationBlurSequence(logo)

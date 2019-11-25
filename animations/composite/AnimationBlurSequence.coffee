@@ -6,34 +6,19 @@ class @AnimationBlurSequence
 		@logo = logo
 		@makeAnimations()
 	
-	start: ->	
-		@shrinkBlur.start()
+	start: ->
+    @blurStar.start()
+    @blurC.start()
+    @blurIn.start()
+    @blurOut.start()
 
-	makeAnimations: -> 
-		
-		@blurStar = new AnimationShrinkBlurLayer(@logo.cStar)
-		@blurC = new AnimationShrinkBlurLayer(@logo.cMid)
-		
-		@blurIn = new AnimationShrinkBlurLayer(@logo.cIn)
-		@blurOut = new AnimationShrinkBlurLayer(@logo.cOut)
-		
-		@blurStar.shrinkBlur.on Events.AnimationEnd =>
-			@blurC.start()
-			
-		###	
-		@blurC.shrinkBlur.on Events.AnimationEnd =>
-			@blurC.start()
-		
-		
-			
-		@blurStar.shrinkBlur.on Events.AnimationEnd =>
-			@blurC.start()
-			
-		@blurStar.shrinkBlur.on Events.AnimationEnd =>
-			@blurC.start()
-		###
-			
-		
+	makeAnimations: ->
+
+    @blurStar = new AnimationShrinkBlurLayer(@logo.cStar, 0)
+    @blurIn = new AnimationShrinkBlurLayer(@logo.cIn, 0.4)
+    @blurC = new AnimationShrinkBlurLayer(@logo.cMid, 0.8)
+    @blurOut = new AnimationShrinkBlurLayer(@logo.cOut, 1.2)
+
 		
 		
 	

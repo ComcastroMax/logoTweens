@@ -11,7 +11,7 @@
 # @prepros-prepend animations/hardcoded/*
 # @prepros-prepend animations/composite/*
 
-# @prepros-prepend main
+# @prepros-prepend loop1
 
 
 

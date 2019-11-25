@@ -2,21 +2,22 @@
  
 
 class @AnimationShrinkBlurLayer
-	constructor: (layer) ->
+	constructor: (layer, delay=0) ->
 		@layer = layer
-		
+		@delay = delay
 		@makeAnimations()
 	
 	start: ->	
 		@shrinkBlur.start()
 
 	makeAnimations: -> 
-		
+
 		#Create Properties
 		dur = 1
 		expansion = 2
 		blurring = 50
-		blurDelay = 2
+		blurDelay = 1.2 + @delay
+		restartDelay = 3.2 - @delay
 		
 		@layer.opacity = 0
 		@layer.scaleX = @layer.scaleY = expansion
@@ -41,15 +42,15 @@ class @AnimationShrinkBlurLayer
 				blur: blurring
 				opacity: 0
 			curve: "ease-out"
-			time: dur
-			delay: blurDelay
+			time: dur/2
+			delay: restartDelay
 				
 		
 		#listeners
 		
 		@shrinkBlur.on Events.AnimationEnd, =>
-			if @loop
-				@shrinkBlurReturn.start()
+#			if @loop
+			@shrinkBlurReturn.start()
 			
 		@shrinkBlurReturn.on Events.AnimationEnd, =>
 			@shrinkBlur.start()
