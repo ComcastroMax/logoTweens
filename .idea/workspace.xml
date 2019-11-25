@@ -2,33 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69c56ef0-d4d9-4a95-a5e4-d34196827c84" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/LogoBg.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/LogoLayerClear.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index1.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index3.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index4.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index5.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index6.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop1.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop2.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop3.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop4.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop5.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loop6.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp1.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp2.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp3.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp4.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp5.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/smallApp6.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/animations/LogoAnimationAssignments.coffee" afterPath="$PROJECT_DIR$/animations/LogoAnimationAssignments.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/animations/composite/AnimationBlurSequence.coffee" afterPath="$PROJECT_DIR$/animations/composite/AnimationBlurSequence.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/animations/singleLayer/AnimationShrinkBlurLayer.coffee" afterPath="$PROJECT_DIR$/animations/singleLayer/AnimationShrinkBlurLayer.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.coffee" afterPath="$PROJECT_DIR$/app.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.coffee" afterPath="$PROJECT_DIR$/main.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prepros.cfg" afterPath="$PROJECT_DIR$/prepros.cfg" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -152,7 +126,6 @@
       <find>class logo</find>
       <find>class log</find>
       <find>cl</find>
-      <find>class</find>
       <find>class @logo</find>
       <find>@LogoLayerNoBG</find>
       <find>l</find>
@@ -600,7 +573,7 @@
         <state relative-caret-position="409">
           <caret line="93" column="31" lean-forward="false" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="31" />
           <folding>
-            <marker date="1574679076083" expanded="true" signature="51517:52536" ph="{...}" />
+            <marker date="1574686989631" expanded="true" signature="51517:52536" ph="{...}" />
           </folding>
         </state>
       </provider>
